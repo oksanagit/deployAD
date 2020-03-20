@@ -1,0 +1,25 @@
+- name: The following is installed= git, python3, gcc, gcc-c++, cmake, make libxml2-devel, boost-devel, libusb-devel, libusbx-devel, pcre-devel, re2c, libXext-devel,readline-devel
+  apt:
+      name: "{{ packages }}"
+      state: present
+  vars: 
+      packages:
+                  - git
+                  - python3
+                  - gcc
+                  - g++ 
+                  - cmake
+                  - make
+                  - libxml2-dev
+                  - libboost-dev
+                  - libusb-dev
+                  - libpcre3-dev
+                  - re2c 
+                  - libx11-dev
+                  - libxext-dev
+                  - libopencv-dev
+                  - libzbar-dev
+                  - libreadline-dev
+                  - libusb-1.0-0-dev
+                  - libdmtx-dev
+      forse_apt_get: yes
