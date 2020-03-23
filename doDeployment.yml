@@ -2,10 +2,12 @@
 - name: Deploy AreaDetector on a target host
   hosts: all
   become: true
-  vars:
-        deployment_dir: /opt/epicsTest
-        epics_base_version: R7.0.3.1
+  vars:     
+  #      epics_base_version: R7.0.3.1
   tasks:
+      - name: include vars 
+        include_vars: config.yml
+
       - include_role:
           name: CentOS
         when: ansible_os_family == 'RedHat'
@@ -13,7 +15,7 @@
       - include_role:
           name: Debian
         when: ansible_os_family == 'Debian'
-      - include_vars: config.yml
+      
       - name: clone epic_base 
         git:
               clone: yes
@@ -23,12 +25,21 @@
               force: yes
               dest: "{{deployment_dir}}/epics-base"
               repo: https://github.com/epics-base/epics-base
-              version: "R7.0.3.1"
+              version: "{{epics_base_version}}"
         environment:
             https_proxy: https://proxy:8888
+      - name: clone synApps [configure, support, documentation, utils]  
+        git:
+              clone: yes
+              update: yes
+              force: yes
+              dest: "{{deployment_dir}}/support/configure"
+              repo: https://github.com/EPICS-synApps/configure
+        environment: 
+            https_proxy: https://proxy:8888      
 
-      - name: buid base Later will build all, just like install all packages
-        command: 
-              cmd: make -sj
-              chdir: "{{deployment_dir}}/epics-base" 
-            
+#      - name: buid base Later will build all, just like install all packages
+#        command: 
+#              cmd: make -sj
+#              chdir: "{{deployment_dir}}/epics-base" 
+#            

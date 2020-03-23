@@ -1,0 +1,2 @@
+deployment_dir: /opt/epicsTest
+epics_base_version: R7.0.3.1
