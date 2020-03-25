@@ -7,10 +7,7 @@
       - configure
       - documentation
       - utils
-    epics_modules: 
-      - ipac
-      # - asyn
-      # - autosave  
+    
   tasks:
       - name: include vars 
         include_vars: config.yml
@@ -68,10 +65,10 @@
               force: yes
               dest: "{{deployment_dir}}/support/{{ item }}"
               repo: "https://github.com/epics-modules/{{ item }}"
-              version: "{{ ipac.version }}"
-              #version: "{{ item }}.version"
+              #version: "{{ ipac.version }}"
+              version: "{{ epicsmodules[item].version }}"
         with_items:  
-          - "{{ epics_modules }}"     
+          - "{{ epics_modules }}"   
         environment: 
              https_proxy: https://proxy:8888      
 

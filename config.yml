@@ -1,11 +1,16 @@
 deployment_dir: /opt/epicsTest
 epics_base_version: R7.0.3.1
 synApps_version: R6-1
-ipac: 
-  version: 2.15
-asyn:
-  version: R4-37
-autosave:
-  version: R5-10  
+epics_modules: 
+      - ipac
+      - asyn
+      - autosave  
+epicsmodules:
+  ipac: 
+    version: 2.15
+  asyn:
+    version: R4-37
+  autosave:
+    version: R5-10  
 
         
