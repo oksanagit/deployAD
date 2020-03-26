@@ -11,7 +11,8 @@
   tasks:
       - name: include vars 
         include_vars: config.yml
-
+      # install necessary libraries depending on the OS 
+      # we are deploying on
       - include_role:
           name: CentOS
         when: ansible_os_family == 'RedHat'
@@ -20,43 +21,10 @@
           name: Debian
         when: ansible_os_family == 'Debian'
       
-      - name: clone epic_base        
-        git:
-              clone: yes
-              update: yes
-              recursive: yes
-              track_submodules: yes
-              force: yes
-              dest: "{{deployment_dir}}/epics-base"
-              repo: https://github.com/epics-base/epics-base
-              version: "{{epics_base_version}}"
-        environment:
-              https_proxy: https://proxy:8888
-      - name: clone synApps  into support       
-        git:
-              clone: yes
-              update: yes
-              recursive: yes
-              track_submodules: yes
-              force: yes
-              dest: "{{deployment_dir}}/support"
-              repo: https://github.com/EPICS-synApps/support
-              version: "{{synApps_version}}"
-        environment:
-              https_proxy: https://proxy:8888
+      - include_role:
+          name: clone
                       
-      - name: clone synApps modules [configure, documentation, utils]  
-        git:
-              clone: yes
-              update: yes
-              force: yes
-              dest: "{{deployment_dir}}/support/{{ item }}"
-              repo: "https://github.com/EPICS-synApps/{{ item }}"
-              version: "{{synApps_version}}"
-        with_items:  
-          - "{{ synApps_modules }}"     
-        environment: 
-             https_proxy: https://proxy:8888  
+     
 
       - name: clone "{{epics_modules}}"  
         git:
