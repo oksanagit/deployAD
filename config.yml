@@ -1,12 +1,21 @@
-proxy_env:
+proxy_https:
       https_proxy: https://proxy:8888
+
 deployment_dir: /opt/epicsTest
 epics_base_version: R7.0.3.1
 synApps_version: R6-1
+# sequencer is not a git progect it should be wget
+sequencer:
+    version: 2.2.8  
+
 epics_modules: 
       - ipac
       - asyn
-      - autosave  
+      - autosave 
+      - busy
+      - sscan
+      - calc
+      - iocStats 
 # We need to have a list and an array 
 # to be able to loop over two variables in the git module
 epicsmodules:
@@ -16,5 +25,29 @@ epicsmodules:
     version: R4-37
   autosave:
     version: R5-10  
+  busy:
+    version: R1-7-2
+  sscan:
+    version: R2-11-3
+  calc:
+    version: R3-7-3
+  iocStats:    
+    version: 3.1.16
 
+AD_modules:
+      - ADCore
+      - ADSupport
+      - ADPilatus
+      - ADPointGrey
+areaDetector:
+  ADSupport:
+    version: R1-9
+  ADCore: 
+    version: R3-8
+  ADPilatus: 
+    version: R2-8
+  ADPointGrey:  
+    version: master
+
+  
         

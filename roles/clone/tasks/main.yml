@@ -8,7 +8,7 @@
         dest: "{{deployment_dir}}/epics-base"
         repo: https://github.com/epics-base/epics-base
         version: "{{epics_base_version}}"
-  environment: "{{ proxy_env }}"
+  environment: "{{ proxy_https }}"
 - name: clone synApps  into support       
   git:
         clone: yes
@@ -19,7 +19,7 @@
         dest: "{{deployment_dir}}/support"
         repo: https://github.com/EPICS-synApps/support
         version: "{{synApps_version}}"
-  environment: "{{ proxy_env }}"
+  environment: "{{ proxy_https }}"
 
 - name: clone synApps modules [configure, documentation, utils]  
   git:
@@ -31,7 +31,7 @@
         version: "{{synApps_version}}"
   with_items:  
     - "{{ synApps_modules }}"     
-  environment: "{{ proxy_env }}"    
+  environment: "{{ proxy_https }}"    
 
 - name: clone "{{epics_modules}}"  
   git:
@@ -44,5 +44,28 @@
         version: "{{ epicsmodules[item].version }}"
   with_items:  
     - "{{ epics_modules }}"   
-  environment: "{{ proxy_env }}"
-   
+  environment: "{{ proxy_https }}"
+
+- name: clone areaDetector root tree
+  git:
+        clone: yes
+        update: yes
+        recursive: no
+        track_submodules: no
+        force: yes
+        dest: "{{deployment_dir}}/support/areaDetector"
+        repo: https://github.com/areaDetector/areaDetector
+        version: "{{areaDetector.ADCore.version}}"
+  environment: "{{ proxy_https }}"
+
+- name: clone "{{AD_modules}}"  
+  git:
+        clone: yes
+        update: yes
+        force: yes
+        dest: "{{deployment_dir}}/support/areaDetector/{{ item }}"
+        repo: "https://github.com/areaDetector/{{ item }}"
+        version: "{{ areaDetector[item].version }}"
+  with_items:  
+    - "{{ AD_modules }}"   
+  environment: "{{ proxy_https }}"

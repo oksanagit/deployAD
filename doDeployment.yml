@@ -23,23 +23,22 @@
       
       - include_role:
           name: clone
-                      
-     
+      # - name : Get sequencer, the outlier 
+      # get_url  does not work, using command insteas
+      - name: get sequencer
+        command: "wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-{{ sequencer.version }}.tar.gz"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: "{{ deployment_dir }}/support/seq-{{ sequencer.version }}.tar.gz"   
 
-      - name: clone "{{epics_modules}}"  
-        git:
-              clone: yes
-              update: yes
-              force: yes
-              dest: "{{deployment_dir}}/support/{{ item }}"
-              repo: "https://github.com/epics-modules/{{ item }}"
-              #version: "{{ ipac.version }}"
-              version: "{{ epicsmodules[item].version }}"
-        with_items:  
-          - "{{ epics_modules }}"   
-        environment: 
-             https_proxy: https://proxy:8888      
-
+      # unarchive does not work, using command instead
+      - name: untar/unzip sequencer
+        command: "tar -xf seq-{{ sequencer.version }}.tar.gz"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: "{{ deployment_dir }}/support/eq-{{ sequencer.version }}"
+  
+        
 #      - name: buid base Later will build all, just like install all packages
 #        command: 
 #              cmd: make -sj
