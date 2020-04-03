@@ -9,6 +9,7 @@
         repo: https://github.com/epics-base/epics-base
         version: "{{epics_base_version}}"
   environment: "{{ proxy_https }}"
+  
 - name: clone synApps  into support       
   git:
         clone: yes
@@ -40,8 +41,7 @@
         force: yes
         dest: "{{deployment_dir}}/support/{{ item }}"
         repo: "https://github.com/epics-modules/{{ item }}"
-        #version: "{{ ipac.version }}"
-        version: "{{ epicsmodules[item].version }}"
+        version: "{{ _epics_modules[item].version }}"
   with_items:  
     - "{{ epics_modules }}"   
   environment: "{{ proxy_https }}"
@@ -69,3 +69,4 @@
   with_items:  
     - "{{ AD_modules }}"   
   environment: "{{ proxy_https }}"
+

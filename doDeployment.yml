@@ -26,18 +26,26 @@
       # - name : Get sequencer, the outlier 
       # get_url  does not work, using command insteas
       - name: get sequencer
-        command: "wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-{{ sequencer.version }}.tar.gz"
+        command: "wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-{{ _epics_modules.seq.version }}.tar.gz"
         args:
             chdir: "{{ deployment_dir }}/support/"
-            creates: "{{ deployment_dir }}/support/seq-{{ sequencer.version }}.tar.gz"   
+            creates: "{{ deployment_dir }}/support/seq-{{ _epics_modules.seq.version }}.tar.gz"   
 
       # unarchive does not work, using command instead
       - name: untar/unzip sequencer
-        command: "tar -xf seq-{{ sequencer.version }}.tar.gz"
+        command: "tar -xf seq-{{ _epics_modules.seq.version }}.tar.gz"
         args:
             chdir: "{{ deployment_dir }}/support/"
-            creates: "{{ deployment_dir }}/support/eq-{{ sequencer.version }}"
-  
+            creates: "{{ deployment_dir }}/support/seq-{{ _epics_modules.seq.version }}"
+
+      - name: rename eq-{{ _epics_modules.seq.version }} to seq
+        command: "mv seq-{{ _epics_modules.seq.version }} seq"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: seq
+
+      - include_role:
+          name: edit_RELEASEs  
         
 #      - name: buid base Later will build all, just like install all packages
 #        command: 

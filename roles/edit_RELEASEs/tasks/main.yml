@@ -1,0 +1,56 @@
+- name: remove RELEASE file
+  file:
+        path: "{{deployment_dir}}/support/configure/RELEASE"
+        state: absent
+
+# - name: edit configure/RELEASE file like synApps does in assemble_syApps.sh
+#   blockinfile:
+#         create: yes
+#         path: "{{deployment_dir}}/support/configure/RELEASE"
+#         block: |
+#           SUPPORT={{deployment_dir}}/support
+#           -include $(TOP)/configure/SUPPORT.$(EPICS_HOST_ARCH)
+#           EPICS_BASE={{deployment_dir}}/epics-base
+#           -include $(TOP)/configure/EPICS_BASE
+#           -include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)
+
+- name: create support/configure/RELEASE.local file like synApps does in assemble_syApps.sh
+  blockinfile:
+        create: yes
+        path: "{{deployment_dir}}/support/configure/RELEASE.local"
+        block: |
+          SUPPORT={{deployment_dir}}/support
+          -include $(TOP)/configure/SUPPORT.$(EPICS_HOST_ARCH)
+          EPICS_BASE={{deployment_dir}}/epics-base
+          -include $(TOP)/configure/EPICS_BASE
+          -include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)
+
+- name: These modules are included in RELEASE.local   
+  lineinfile:
+        create: no
+        path: "{{deployment_dir}}/support/configure/RELEASE.local"
+        line: "{{ _epics_modules[item].name }}=$(SUPPORT)/{{ item }}"
+  with_items: 
+    - "{{ epics_modules }}"
+    - seq
+
+# - name: Each module needs to get its own RELEASE.local with SUPPORT= EPICS_BASE = 
+#   blockinfile:
+#         create: yes
+#         path: "{{deployment_dir}}/support/{{item}}/configure/RELEASE.local"
+#         block: |
+#           SUPPORT={{deployment_dir}}/support
+#           EPICS_BASE={{deployment_dir}}/epics-base
+#           -include $(TOP)/../configure/RELEASE.local
+#   with_items:
+#       -  "{{ epics_modules }}" 
+#       - seq      
+
+- name: Each module needs to get its own RELEASE.local with SUPPORT= EPICS_BASE = 
+  lineinfile:
+        create: yes
+        path: "{{deployment_dir}}/support/{{item}}/configure/RELEASE.local"
+        line: -include $(TOP)/../configure/RELEASE.local
+  with_items:
+      -  "{{ epics_modules }}" 
+      - seq      

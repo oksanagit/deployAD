@@ -1,4 +1,6 @@
-- name: The following is installed= git, python3, gcc, gcc-c++, cmake, libxml2-devel, boost-devel, libusb-devel, libusbx-devel, pcre-devel, re2c, libXext-devel,readline-devel
+- name: The following {{packages}} is installed
+# git, python3, gcc, gcc-c++, cmake, libxml2-devel, boost-devel, libusb-devel, 
+# libusbx-devel, pcre-devel, re2c, libXext-devel,readline-devel
   yum:
     name: "{{ packages }}"
     state: present
