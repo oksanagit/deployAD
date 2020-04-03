@@ -46,6 +46,9 @@
 
       - include_role:
           name: edit_RELEASEs  
+
+      - include_role:
+          name: compile     
         
 #      - name: buid base Later will build all, just like install all packages
 #        command: 

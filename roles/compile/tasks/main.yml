@@ -1,0 +1,14 @@
+- name: buid base 
+  command: 
+        cmd: make -sj
+        chdir: "{{deployment_dir}}/epics-base" 
+
+- name: build epics packages in the order spesified in the list epics_modules. 
+  command: 
+  args:
+        cmd: make -sj
+        chdir: "{{deployment_dir}}/support/{{item}}"
+  with_items:
+    - seq
+    - "{{ epics_modules }}"
+                   
