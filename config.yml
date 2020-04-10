@@ -16,7 +16,7 @@ epics_modules:
       - busy
       - sscan
       - calc
-      - iocStats 
+      - iocStats
 # We need to have a list and an array 
 # to be able to loop over two variables in the git module
 _epics_modules:
@@ -44,7 +44,7 @@ _epics_modules:
   # version OK
     version: R3-7-3
     name: CALC
-  iocStats:    
+  iocStats:
   #  version: 3.1.16
     version: master
     name: DEVIOCSTATS 
@@ -52,20 +52,35 @@ _epics_modules:
     version: 2.2.8
     name: SNCSEQ  
 
+# Order of AD_modules is very important, they will be compiled  in this order
 AD_modules:
-      - ADCore
       - ADSupport
+      - ADCore
+      - ADSimdetector
       - ADPilatus
+      - ADEiger
       - ADPointGrey
 areaDetector:
+  areaDetector:
+    version: master
   ADSupport:
     version: R1-9
+    name: ADSUPPORT
   ADCore: 
     version: R3-8
+    name: ADCORE
+  ADSimdetector:
+    version: master  
+    name: ADSIMDETECTOR
   ADPilatus: 
     version: R2-8
+    name: ADPILATUS
+  ADEiger:
+    version: master
+    name: ADEIGER
   ADPointGrey:  
     version: master
+    name: ADPOINTGREY
 
   
         

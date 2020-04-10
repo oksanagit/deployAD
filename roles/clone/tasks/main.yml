@@ -55,7 +55,7 @@
         force: yes
         dest: "{{deployment_dir}}/support/areaDetector"
         repo: https://github.com/areaDetector/areaDetector
-        version: "{{areaDetector.ADCore.version}}"
+        version: "{{areaDetector.areaDetector.version}}"
   environment: "{{ proxy_https }}"
 
 - name: clone "{{AD_modules}}"  

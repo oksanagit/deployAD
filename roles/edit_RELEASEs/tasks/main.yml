@@ -1,20 +1,23 @@
-- name: remove RELEASE file
+- name: remove configure/RELEASE to avoid any definition conflicts
   file:
         path: "{{deployment_dir}}/support/configure/RELEASE"
         state: absent
 
-# - name: edit configure/RELEASE file like synApps does in assemble_syApps.sh
-#   blockinfile:
-#         create: yes
-#         path: "{{deployment_dir}}/support/configure/RELEASE"
-#         block: |
-#           SUPPORT={{deployment_dir}}/support
-#           -include $(TOP)/configure/SUPPORT.$(EPICS_HOST_ARCH)
-#           EPICS_BASE={{deployment_dir}}/epics-base
-#           -include $(TOP)/configure/EPICS_BASE
-#           -include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)
+- name: leav  3 last lones in configure/RELEASE to include RELEASE.local
+  blockinfile:
+        create: yes
+        path: "{{deployment_dir}}/support/configure/RELEASE"
+        block: |
+            # These lines allow developers to override these RELEASE settings
+            # without having to modify this file directly.
+            -include $(TOP)/RELEASE.local
+            -include $(TOP)/RELEASE.$(EPICS_HOST_ARCH).local
+            -include $(TOP)/configure/RELEASE.local      
 
-- name: create support/configure/RELEASE.local file like synApps does in assemble_syApps.sh
+# configure/RELEASE file from repo includes RELEASE.local. We need to create site specific RELEASE.local file
+# similar way as assemble_synApps.sh created RELEASE file 
+
+- name: create support/configure/RELEASE.local assynApps does in assemble_syApps.sh
   blockinfile:
         create: yes
         path: "{{deployment_dir}}/support/configure/RELEASE.local"
@@ -25,7 +28,7 @@
           -include $(TOP)/configure/EPICS_BASE
           -include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)
 
-- name: These modules are included in RELEASE.local   
+- name: These modules are included in support/configure/RELEASE.local   
   lineinfile:
         create: no
         path: "{{deployment_dir}}/support/configure/RELEASE.local"
@@ -34,23 +37,159 @@
     - "{{ epics_modules }}"
     - seq
 
-# - name: Each module needs to get its own RELEASE.local with SUPPORT= EPICS_BASE = 
-#   blockinfile:
-#         create: yes
-#         path: "{{deployment_dir}}/support/{{item}}/configure/RELEASE.local"
-#         block: |
-#           SUPPORT={{deployment_dir}}/support
-#           EPICS_BASE={{deployment_dir}}/epics-base
-#           -include $(TOP)/../configure/RELEASE.local
-#   with_items:
-#       -  "{{ epics_modules }}" 
-#       - seq      
-
 - name: Each module needs to get its own RELEASE.local with SUPPORT= EPICS_BASE = 
-  lineinfile:
+  blockinfile:
         create: yes
         path: "{{deployment_dir}}/support/{{item}}/configure/RELEASE.local"
-        line: -include $(TOP)/../configure/RELEASE.local
+        block: |      
+          #
+          # Instead of defining SUPPORT = and EPICS_BASE =  
+          # and redefining  included modules, which contain version as aprt of thier name
+          # we are including the configure/RELEASE.local.
+          # One could include cpnfigure/RELEASE, which in turn includes configure/RELEASE.local
+          # local settings will override the ones in RELEASE for every module
+           
+          -include $(TOP)/../configure/RELEASE.local
+           
   with_items:
       -  "{{ epics_modules }}" 
       - seq      
+
+# Here, instead of defining SUPPORT = and EPICS_BASE = , as make release does,
+# we include configure/RELESE.local with all modules' path's defined.
+# If there is a dependency the module path will be included
+## Same as above just as a single line, no comments
+
+# - name: Each module needs to get its own RELEASE.local with SUPPORT= EPICS_BASE = 
+#   lineinfile:
+#         create: yes
+#         path: "{{deployment_dir}}/support/{{item}}/configure/RELEASE.local"
+#         line: -include $(TOP)/../configure/RELEASE.local
+#   with_items:
+#       -  "{{ epics_modules }}" 
+#       - seq  
+#       - areaDetector   
+
+
+
+
+#######################################
+# Configure areaDetector module
+#######################################
+#Due to complexiy of areaDetector build system,
+# I have not succeeded to get away with a single RELESE.local 
+# Follow instructions and will run make release at the end ,
+# which I successfuly avoided so far
+
+
+- name: Copy EXAMPLE_commonPlugins.cmd to commonPlugins.cmd
+  command: cp EXAMPLE_commonPlugins.cmd commonPlugins.cmd
+  args:
+        chdir: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot"
+
+- name: Copy EXAMPLE_commonPlugin_settings.req to commonPlugin_settings.req
+  command: cp EXAMPLE_commonPlugin_settings.req commonPlugin_settings.req
+  args:
+        chdir: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot"        
+
+#####################################
+# CONFIG_SITE.local
+#####################################
+
+- name: Copy EXAMPLE_CONFIG_SITE.local to CONFIG_SITE.local
+  command: cp EXAMPLE_CONFIG_SITE.local CONFIG_SITE.local
+  args:
+        chdir: "{{deployment_dir}}/support/areaDetector/configure/"
+
+
+#######################################
+# RELEASE_LIBS.local
+#######################################
+
+- name: Create RELEASE_LIBS.local
+  blockinfile:
+        create: yes
+        path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE_LIBS.local"
+        block: |      
+          #
+          SUPPORT={{deployment_dir}}/support
+          ASYN=$(SUPPORT)/asyn
+          AREA_DETECTOR=$(SUPPORT)/areaDetector
+          ADSUPPORT=$(AREA_DETECTOR)/ADSupport
+          ADCORE=$(AREA_DETECTOR)/ADCore
+          EPICS_BASE={{deployment_dir}}/epics-base
+          -include $(AREA_DETECTOR)/configure/RELEASE_BASE.local.$(EPICS_HOST_ARCH)
+          ### -include $(TOP)/../configure/RELEASE.local OKS way
+           
+######################################
+# RELEASE_PRODS.local
+#######################################
+
+- name: Create RELEASE_PRODS.local
+  blockinfile:
+        create: yes
+        path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE_PRODS.local"
+        block: |      
+          #
+          SUPPORT={{deployment_dir}}/support
+          ASYN=$(SUPPORT)/asyn
+          AREA_DETECTOR=$(SUPPORT)/areaDetector
+          ADSUPPORT=$(AREA_DETECTOR)/ADSupport
+          ADCORE=$(AREA_DETECTOR)/ADCore
+          AUTOSAVE=$(SUPPORT)/autosave
+          BUSY=$(SUPPORT)/busy
+          CALC=$(SUPPORT)/calc
+          SNCSEQ=$(SUPPORT)/seq
+          SSCAN=$(SUPPORT)/sscan
+          DEVIOCSTATS=$(SUPPORT)/iocStats
+          EPICS_BASE={{deployment_dir}}/epics-base
+          -include $(AREA_DETECTOR)/configure/RELEASE_PRODS.local.$(EPICS_HOST_ARCH)
+          ### -include $(TOP)/../configure/RELEASE.local OKS way
+
+# ###################################
+# # RELEASE_SUPPORT.local
+# ###################################           
+
+# - name:  RELEASE_SUPPORT.local Define SUPPORT
+#   lineinfile:
+#           create: yes
+#           path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE_SUPPORT.local"
+#           line: SUPPORT={{deployment_dir}}/support
+
+# # Not sure if RELEASE_BASE.local is actualy needed              
+# - name:  RELEASE_BASE.local Define EPICS_BASE
+#   lineinfile:
+#           create: yes
+#           path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE_BASE.local"
+#           line: EPICS_BASE="{{deployment_dir}}/epics-base"
+                            
+# TBD: If Windows, should add hdf5 static build
+
+###################################
+# REALESE.local
+###################################
+
+# - name: Copy EXAMPLE_RELEASE.local to RELEASE.local
+#   command: cp EXAMPLE_RELEASE.local RELEASE.local
+#   args:
+#         chdir: "{{deployment_dir}}/support/areaDetector/configure/"
+# This step doesn't realy matter because the modules are compiled independetly 
+# in the order specified by AD_modules
+
+- name: add "{{AD_modules}}" module to RELEASE.local
+  lineinfile:
+      create: yes
+      path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE.local"
+      line: "{{areaDetector[item].name}}=$(AREA_DETECTOR)/{{item}}"   
+      state: present
+#      insertbefore: '\-include'
+  with_items: 
+      - "{{AD_modules}}"  
+  when: item != 'ADCore'          
+
+- name: Change areaDetector/configure/RELEASE.local
+  blockinfile:
+        path: "{{deployment_dir}}/support/areaDetector/configure/RELEASE.local"
+        block: |
+          -include $(TOP)/configure/RELEASE.local.$(EPICS_HOST_ARCH)
+          ##-include $(TOP)/../configure/RELEASE.local OKS way
