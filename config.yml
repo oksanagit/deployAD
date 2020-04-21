@@ -1,7 +1,34 @@
+###############################################################
+#
+#  These vars are defiNed for each beamline/server installation
+#
+################################################################
+
+deployment_dir: /opt/epicsTest
+AD_modules_local:
+      - ADPilatus
+      - ADEiger
+      - ADPointGrey
+
+_AD_modules_local:
+    ADPilatus:
+        version: R2-8
+    ADEiger:
+        version: master
+    ADPointGrey:
+        version: master
+
+##############################
+#
+# END of local vars section
+#
+###############################
 proxy_https:
       https_proxy: https://proxy:8888
 
-deployment_dir: /opt/epicsTest
+proxy_http:
+      http_proxy: http://proxy:8888
+
 epics_base_version: R7.0.3.1
 #synApps_version: R6-1
 synApps_version: master
@@ -57,9 +84,9 @@ AD_modules:
       - ADSupport
       - ADCore
       - ADSimdetector
-      - ADPilatus
-      - ADEiger
-      - ADPointGrey
+#      - ADPilatus
+#      - ADEiger
+#      - ADPointGrey
 areaDetector:
   areaDetector:
     version: master

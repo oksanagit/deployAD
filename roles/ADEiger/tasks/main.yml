@@ -1,0 +1,34 @@
+- name: The following {{packages}} is installed
+# Install specific packages for ADEiger
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars: 
+    packages:
+         - zeromq-devel
+  when:  "ansible_os_family == 'RedHat'"      
+
+- name: The following {{ packages }} is installed
+  apt:
+      name: "{{ packages }}"
+      state: present
+  vars: 
+      packages:
+                  - libzmq5-dev
+      forse_apt_get: yes
+  when:  "ansible_os_family == 'Debian'"      
+- name: clone ADEiger
+  git: 
+        clone: yes
+        update: yes
+        force: yes
+        dest: "{{deployment_dir}}/support/areaDetector/ADEiger"
+        repo: "https://github.com/areaDetector/ADEiger"
+        version: "{{_AD_modules_local.ADEiger.version }}"
+  environment: "{{ proxy_https }}" 
+
+- name: build ADEiger
+  command: 
+  args: 
+        cmd: make -sj
+        chdir: "{{deployment_dir}}/support/areaDetector/ADEiger"

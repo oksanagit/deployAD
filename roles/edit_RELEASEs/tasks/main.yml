@@ -92,6 +92,22 @@
   args:
         chdir: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot"        
 
+#########################################
+# Edit commonPlugins.cmd
+# NSLS2 is using QSRV and PVA
+#########################################
+- name: Uncomment so far "Optional" PVAPlugin and PVAServer 
+  blockinfile:
+        create: no
+        path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+        insertafter: "#startPVAServer"
+        block: |
+          NDPvaConfigure("PVA1", $(QSIZE), 0, "$(PORT)", 0, $(PREFIX)Pva1:Image, 0, 0, 0)
+          dbLoadRecords("NDPva.template",  "P=$(PREFIX),R=Pva1:, PORT=PVA1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)")
+          # Must start PVA server if this is enabled
+          startPVAServer
+         
+
 #####################################
 # CONFIG_SITE.local
 #####################################

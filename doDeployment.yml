@@ -25,11 +25,16 @@
           name: clone
       # - name : Get sequencer, the outlier 
       # get_url  does not work, using command insteas
+      # need both http_proxy and https_proxy set to work
       - name: get sequencer
         command: "wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-{{ _epics_modules.seq.version }}.tar.gz"
         args:
             chdir: "{{ deployment_dir }}/support/"
             creates: "{{ deployment_dir }}/support/seq-{{ _epics_modules.seq.version }}.tar.gz"   
+        environment: 
+            https_proxy: https://proxy:8888
+            http_proxy: http://proxy:8888   
+
 
       # unarchive does not work, using command instead
       - name: untar/unzip sequencer
@@ -50,8 +55,8 @@
       - include_role:
           name: compile     
         
-#      - name: buid base Later will build all, just like install all packages
-#        command: 
-#              cmd: make -sj
-#              chdir: "{{deployment_dir}}/epics-base" 
-#            
+#      Now build  AD modules selectively: the ones you need
+      - include_role:
+          name: ADEiger  
+        with_items: "{{ AD_modules_local }}"
+        when:  item == "ADEiger"   
