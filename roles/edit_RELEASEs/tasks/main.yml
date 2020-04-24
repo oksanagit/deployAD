@@ -96,17 +96,64 @@
 # Edit commonPlugins.cmd
 # NSLS2 is using QSRV and PVA
 #########################################
-- name: Uncomment so far "Optional" PVAPlugin and PVAServer 
-  blockinfile:
-        create: no
-        path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
-        insertafter: "#startPVAServer"
-        block: |
-          NDPvaConfigure("PVA1", $(QSIZE), 0, "$(PORT)", 0, $(PREFIX)Pva1:Image, 0, 0, 0)
-          dbLoadRecords("NDPva.template",  "P=$(PREFIX),R=Pva1:, PORT=PVA1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)")
-          # Must start PVA server if this is enabled
-          startPVAServer
+# - name: Uncomment so far "Optional" PVAPlugin and PVAServer 
+#   blockinfile:
+#         create: no
+#         path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+#         insertafter: "#startPVAServer"
+#         block: |
+#           NDPvaConfigure("PVA1", $(QSIZE), 0, "$(PORT)", 0, $(PREFIX)Pva1:Image, 0, 0, 0)
+#           dbLoadRecords("NDPva.template",  "P=$(PREFIX),R=Pva1:, PORT=PVA1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)")
+#           # Must start PVA server if this is enabled
+#           startPVAServer
          
+- name: Uncomment "Optional" PVAPlugin
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#NDPvaConfigure'
+    replace: 'NDPvaConfigure'
+
+- name: Uncomment "Optional" PVAPlugin
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#dbLoadRecords\(\"NDPva.template'
+    replace: 'dbLoadRecords("NDPva.template'
+        
+- name: Uncomment "Optional" PVAServer
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#startPVAServer'
+    replace: 'startPVAServer'
+
+- name: Uncomment "Optional" Graphic Magic NDFileMagickConfigure
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#NDFileMagickConfigure'
+    replace: 'NDFileMagickConfigure'
+
+- name: Uncomment Graphic Magic NDFileMagick.template
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#dbLoadRecords\(\"NDFileMagick.template\"'
+    replace: 'dbLoadRecords("NDFileMagick.template"'
+
+- name: Uncomment "Optional" DEVIOCSTATS
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugins.cmd" 
+    regexp: '#dbLoadRecords\(\"\$\(DEVIOCSTATS'
+    replace: 'dbLoadRecords("$(DEVIOCSTATS'
+
+#########################################
+# Edit commonPlugin_settings.req
+# NSLS2 is using QSRV and PVA
+#########################################
+
+- name: Uncomment "Optional" PVAPlugin
+  replace:
+    path: "{{deployment_dir}}/support/areaDetector/ADCore/iocBoot/commonPlugin_settings.req" 
+    regexp: '#file "NDPva_settings.req"'
+    replace: 'file "NDPva_settings.req"'
+
 
 #####################################
 # CONFIG_SITE.local
