@@ -3,7 +3,7 @@
         path: "{{deployment_dir}}/support/configure/RELEASE"
         state: absent
 
-- name: leav  3 last lones in configure/RELEASE to include RELEASE.local
+- name: 3 last lines in support/configure/RELEASE include RELEASE.local
   blockinfile:
         create: yes
         path: "{{deployment_dir}}/support/configure/RELEASE"
