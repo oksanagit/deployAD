@@ -9,6 +9,7 @@ AD_modules_local:
       - ADPilatus
       - ADEiger
       - ADPointGrey
+      - ADProsilica 
 
 _AD_modules_local:
     ADPilatus:
@@ -17,6 +18,8 @@ _AD_modules_local:
         version: master
     ADPointGrey:
         version: master
+    ADProsilica:
+        version: master    
 
 ##############################
 #

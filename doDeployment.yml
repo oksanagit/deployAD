@@ -60,3 +60,9 @@
           name: ADEiger  
         with_items: "{{ AD_modules_local }}"
         when:  item == "ADEiger"   
+      
+      - include_role:
+          name: ADProsilica  
+        with_items: "{{ AD_modules_local }}"
+        when:  item == "ADProsilica"
+        
