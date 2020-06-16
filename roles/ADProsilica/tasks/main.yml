@@ -1,22 +1,4 @@
-# - name: The following {{packages}} is installed
-# # Install specific packages for ADEiger
-#   yum:
-#     name: "{{ packages }}"
-#     state: present
-#   vars: 
-#     packages:
-#          - zeromq-devel
-#   when:  "ansible_os_family == 'RedHat'"      
 
-# - name: The following {{ packages }} is installed
-#   apt:
-#       name: "{{ packages }}"
-#       state: present
-#   vars: 
-#       packages:
-#                   - libzmq5-dev
-#       forse_apt_get: yes
-#   when:  "ansible_os_family == 'Debian'"      
 - name: clone ADProsilica
   git: 
         clone: yes

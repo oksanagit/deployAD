@@ -65,4 +65,8 @@
           name: ADProsilica  
         with_items: "{{ AD_modules_local }}"
         when:  item == "ADProsilica"
-        
+
+      - include_role:
+          name: ADPointGrey  
+        with_items: "{{ AD_modules_local }}"
+        when:  item == "ADPointGrey" 

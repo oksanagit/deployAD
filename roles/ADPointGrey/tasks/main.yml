@@ -1,0 +1,15 @@
+- name: clone ADPointGrey
+  git: 
+        clone: yes
+        update: yes
+        force: yes
+        dest: "{{deployment_dir}}/support/areaDetector/ADPointGrey"
+        repo: "https://github.com/areaDetector/ADPointGrey"
+        version: "{{_AD_modules_local.ADPointGrey.version }}"
+  environment: "{{ proxy_https }}" 
+
+- name: build ADPointGrey
+  command: 
+  args: 
+        cmd: make -sj
+        chdir: "{{deployment_dir}}/support/areaDetector/ADPointGrey"
