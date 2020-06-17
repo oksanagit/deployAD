@@ -14,12 +14,7 @@
       # install necessary libraries depending on the OS 
       # we are deploying on
       - include_role:
-          name: CentOS
-        when: ansible_os_family == 'RedHat'
-        
-      - include_role:
-          name: Debian
-        when: ansible_os_family == 'Debian'
+          name: install_system_packages
       
       - include_role:
           name: clone
