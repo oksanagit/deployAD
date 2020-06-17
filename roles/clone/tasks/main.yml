@@ -70,3 +70,4 @@
     - "{{ AD_modules }}"   
   environment: "{{ proxy_https }}"
 
+- import_tasks: getSequencer.yml

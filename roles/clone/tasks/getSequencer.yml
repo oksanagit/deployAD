@@ -1,0 +1,25 @@
+# - name : Get sequencer, the outlier 
+      # get_url  does not work, using command insteas
+      # need both http_proxy and https_proxy set to work
+      - name: get sequencer
+        command: "wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-{{ _epics_modules.seq.version }}.tar.gz"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: "{{ deployment_dir }}/support/seq-{{ _epics_modules.seq.version }}.tar.gz"   
+        environment: 
+            https_proxy: https://proxy:8888
+            http_proxy: http://proxy:8888   
+
+
+      # unarchive does not work, using command instead
+      - name: untar/unzip sequencer
+        command: "tar -xf seq-{{ _epics_modules.seq.version }}.tar.gz"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: "{{ deployment_dir }}/support/seq-{{ _epics_modules.seq.version }}"
+
+      - name: rename eq-{{ _epics_modules.seq.version }} to seq
+        command: "mv seq-{{ _epics_modules.seq.version }} seq"
+        args:
+            chdir: "{{ deployment_dir }}/support/"
+            creates: seq
