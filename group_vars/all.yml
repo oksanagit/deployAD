@@ -39,6 +39,11 @@ synApps_version: master
 #sequencer:
 #    version: 2.2.8  
 
+synApps_modules: 
+      - configure
+      - documentation
+      - utils
+
 epics_modules: 
       - ipac
       - asyn
