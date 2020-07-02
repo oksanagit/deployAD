@@ -15,7 +15,6 @@
   vars: 
       packages:
                   - libzmq5-dev
-      forse_apt_get: yes
   when:  "ansible_os_family == 'Debian'"      
 - name: clone ADEiger
   git: 

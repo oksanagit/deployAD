@@ -22,4 +22,3 @@
                   - libreadline-dev
                   - libusb-1.0-0-dev
                   - libdmtx-dev
-      forse_apt_get: yes
