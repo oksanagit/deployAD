@@ -3,7 +3,7 @@
         clone: yes
         update: yes
         recursive: yes
-        track_submodules: yes
+#        track_submodules: yes t5his line keeps submudules at the latest version
         force: yes
         dest: "{{deployment_dir}}/epics-base"
         repo: https://github.com/epics-base/epics-base
@@ -15,7 +15,7 @@
         clone: yes
         update: yes
         recursive: yes
-        track_submodules: yes
+#        track_submodules: yes
         force: yes
         dest: "{{deployment_dir}}/support"
         repo: https://github.com/EPICS-synApps/support
