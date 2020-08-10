@@ -1,11 +1,10 @@
-- name: The following {{packages}} is installed
+- name: The following {{ item }} is installed
 # git, python3, gcc, gcc-c++, cmake, libxml2-devel, boost-devel, libusb-devel, 
 # libusbx-devel, pcre-devel, re2c, libXext-devel,readline-devel
   yum:
-    name: "{{ packages }}"
+    name: "{{ item }}"
     state: present
-  vars: 
-    packages:
+  with_items:
          - git
          - python3
          - gcc
