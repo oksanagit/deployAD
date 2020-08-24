@@ -3,7 +3,7 @@
         clone: yes
         update: yes
         recursive: yes
-#        track_submodules: yes t5his line keeps submudules at the latest version
+#        track_submodules: yes ## this line keeps submudules at the latest version of master
         force: yes
         dest: "{{deployment_dir}}/epics-base"
         repo: https://github.com/epics-base/epics-base
