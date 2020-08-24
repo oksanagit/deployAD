@@ -1,21 +1,5 @@
-- name: The following {{packages}} is installed
-# Install specific packages for ADEiger
-  yum:
-    name: "{{ packages }}"
-    state: present
-  vars: 
-    packages:
-         - zeromq-devel
-  when:  "ansible_os_family == 'RedHat'"      
+- include_tasks: "{{ ansible_os_family }}.yml"
 
-- name: The following {{ packages }} is installed
-  apt:
-      name: "{{ packages }}"
-      state: present
-  vars: 
-      packages:
-                  - libzmq5-dev
-  when:  "ansible_os_family == 'Debian'"      
 - name: clone ADEiger
   git: 
         clone: yes

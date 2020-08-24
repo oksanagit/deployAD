@@ -1,0 +1,4 @@
+- name: Install zeromq-devel
+  yum:
+    name: zeromq-devel
+    state: present
