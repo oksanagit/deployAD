@@ -1,0 +1,4 @@
+- name: Install libraw1394
+  yum:
+    name: libraw1394
+    state: present

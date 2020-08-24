@@ -1,3 +1,5 @@
+- include_tasks: "{{ ansible_os_family }}.yml"
+
 - name: clone ADPointGrey
   git: 
         clone: yes
