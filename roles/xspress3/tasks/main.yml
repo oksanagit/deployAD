@@ -1,0 +1,23 @@
+- name: clone xspress3
+  git: 
+      clone: yes
+      update: yes
+      force: yes # Do you need force?
+      dest: "{{ deployment_dir }}/support/xspress3"
+      repo: "https://github.com/epics-modules/xspress3.git"
+      version: "{{ _AD_satellites.xspress3.version }}"
+  environment: "{{ proxy_https }}"
+
+- name: edit xspress3/configure/RELEASE 
+  lineinfile:
+      path: "{{deployment_dir}}/support/xspress3/configure/RELEASE"
+      state: present
+      regexp: '^SUPPORT=.*$'
+      line: 'SUPPORT={{deployment_dir}}/support'
+      backrefs: yes
+
+- name: build xspress3
+  command: 
+  args: 
+      cmd: make -sj
+      chdir: "{{ deployment_dir }}/support/xspress3"   

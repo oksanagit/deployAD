@@ -31,3 +31,9 @@
           name: ADPointGrey  
         with_items: "{{ AD_modules_local }}"
         when:  item == "ADPointGrey" 
+
+      - include_role:
+          name: xspress3
+        with_items: "{{ AD_modules_local }}"
+        when: item == "xspress3"    
+        

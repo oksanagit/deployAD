@@ -10,6 +10,7 @@ AD_modules_local:
       - ADEiger
       - ADPointGrey
       - ADProsilica 
+      - xspress3
 
 _AD_modules_local:
     ADPilatus:
@@ -19,7 +20,11 @@ _AD_modules_local:
     ADPointGrey:
         version: master
     ADProsilica:
-        version: master    
+        version: master 
+
+_AD_satellites: 
+    xspress3:
+        version: master
 
 ##############################
 #
