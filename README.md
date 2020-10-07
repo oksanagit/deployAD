@@ -17,7 +17,7 @@ Ansible technology supports "parallel"/simultaneous deployments on multiple targ
 The following command will clone and build all supported modules on hosts tagged as ISS in 'hosts' file with the configuration defined in all.yml. 
 If --limit is not spesified, script will deploy on *all* hosts spesified in 'hosts' file. 
     
-```ansible-playbook -i ./hosts -K deploy.yml --limit=ISS```   
+```ansible-playbook -i ./hosts -K doDeployment.yml --limit=ISS```   
 -k requires user login  
 -K requires sudo password
    
@@ -26,4 +26,5 @@ One will be offered to enter ssh and sudo passwords for 'xspress3' user.
    
 ```ansible-playbook -i ./hosts -Kk doDeployment.yml --limit SRX --user xspress3```   
 
-
+# How it works
+The main module doDeployment.yml calls different roles and makes decision to include/exclude certain module based on configuration settings.
