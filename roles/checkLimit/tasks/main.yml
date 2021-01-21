@@ -1,0 +1,5 @@
+
+- fail:
+    msg: "you must use -l or --limit"
+  when: ansible_limit is not defined
+  run_once: true
