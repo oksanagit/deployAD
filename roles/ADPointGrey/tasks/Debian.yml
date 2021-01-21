@@ -1,4 +1,4 @@
 - name: Install libraw1394
   apt:
-    name: libraw1394
+    name: libraw1394-11
     state: present
