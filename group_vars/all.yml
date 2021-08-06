@@ -4,12 +4,13 @@
 #
 ################################################################
 
-deployment_dir: /opt/epicsTest
+# deployment_dir: /opt/epicsTest
+deployment_dir: /nsls2/users/oksana/epics
 AD_modules_local:
-      - ADPilatus
-      - ADEiger
-      - ADPointGrey
-      - ADProsilica 
+      # - ADPilatus
+      # - ADEiger
+      # - ADPointGrey
+      # - ADProsilica 
       - xspress3
 
 _AD_modules_local:
@@ -37,7 +38,7 @@ proxy_https:
 proxy_http:
       http_proxy: http://proxy:8888
 
-epics_base_version: R7.0.3.1
+epics_base_version: R7.0.5
 #synApps_version: R6-1
 synApps_version: master
 # sequencer is not a git project it should be wget
@@ -61,20 +62,20 @@ epics_modules:
 # to be able to loop over two variables in the git module
 _epics_modules:
   ipac: 
-#    version: 2.15
-    version: master
+    version: 2.16
+#    version: master
     name: IPAC
   asyn:
   # version OK
-    version: R4-37
+    version: R4-41
     name: ASYN
   autosave:
   # version OK
-    version: R5-10
+    version: R5-10-2
     name: AUTOSAVE  
   busy:
   # version OK
-    version: R1-7-2
+    version: R1-7-3
     name: BUSY
   sscan:
   # version OK
@@ -102,18 +103,18 @@ AD_modules:
 #      - ADPointGrey
 areaDetector:
   areaDetector:
-    version: master
+    version: R3-10
   ADSupport:
-    version: R1-9
+    version: R1-9-1
     name: ADSUPPORT
   ADCore: 
-    version: R3-8
+    version: R3-10
     name: ADCORE
   ADSimDetector:
     version: master  
     name: ADSIMDETECTOR
   ADPilatus: 
-    version: R2-8
+    version: R2-9
     name: ADPILATUS
   ADEiger:
     version: master

@@ -6,7 +6,7 @@
       dest: "{{ deployment_dir }}/support/xspress3"
       repo: "https://github.com/epics-modules/xspress3.git"
       version: "{{ _AD_satellites.xspress3.version }}"
-  environment: "{{ proxy_https }}"
+  #environment: "{{ proxy_https }}"
 
 - name: edit xspress3/configure/RELEASE 
   lineinfile:

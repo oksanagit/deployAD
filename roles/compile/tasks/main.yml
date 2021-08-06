@@ -13,7 +13,7 @@
 - name: build epics packages in the order spesified in the list epics_modules. 
   command: 
   args:
-        cmd: make -sj
+        cmd: make -sj TIRPC=YES
         chdir: "{{deployment_dir}}/support/{{item}}"
   with_items:
     - seq
@@ -25,7 +25,7 @@
 - name: build {{AD_modules}}. 
   command: 
   args:
-        cmd: make -sj
+        cmd: make -sj TIRPC=YES
         chdir: "{{deployment_dir}}/support/areaDetector/{{item}}"
   with_items:
     - "{{ AD_modules }}"
