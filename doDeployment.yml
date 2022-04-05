@@ -1,11 +1,11 @@
 ---
 - name: Deploy AreaDetector on a target host
   hosts: all
-  become: true
+ # become: true
   
   roles:
       - checkLimit
-      - install_system_packages
+  #    - install_system_packages
       - clone
       - edit_RELEASEs
       - compile
